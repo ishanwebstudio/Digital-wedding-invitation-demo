@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="si" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Invitation & Guest Portal | Kasun & Nuwani</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            DEFAULT: '#D4AF37',
+                            light: '#F8F1D8',
+                            hover: '#C5A028',
+                            dark: '#9A7B1C',
+                            rose: '#C88A8A',
+                            roselight: '#F9ECEC'
+                        },
+                        ivory: '#FDFBF7',
+                        blush: '#FFF5F5',
+                        charcoal: '#2B2B2B'
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        sans: ['Inter', 'Poppins', 'sans-serif'],
+                        cursive: ['Great Vibes', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Glassmorphism & Decorative Styles -->
+    <style>
+        .font-cursive { font-family: 'Great Vibes', cursive; }
+        .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+        .font-sans { font-family: 'Inter', sans-serif; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+        }
+
+        .gold-shimmer-text {
+            background: linear-gradient(135deg, #9A7B1C 0%, #D4AF37 50%, #C5A028 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-button {
+            background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
+            transition: all 0.3s ease;
+        }
+        .gold-button:hover {
+            background: linear-gradient(135deg, #C5A028 0%, #8A6409 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0;
+            animation: floatUp 7s infinite ease-in-out;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { transform: translateY(-120px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Heart Pulse */
+        @keyframes subtlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+        }
+        .animate-pulse-subtle {
+            animation: subtlePulse 2.5s infinite ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FDFBF7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-ivory text-charcoal font-sans antialiased selection:bg-gold-light selection:text-gold-dark min-h-screen">
+
+    <!-- Background Audio -->
+    <audio id="weddingMusic" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-wedding-115271.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Top Sticky Floating Control Bar -->
+    <div class="fixed top-4 inset-x-0 z-50 px-4 pointer-events-none flex justify-between items-center max-w-5xl mx-auto">
+        <!-- Language Selector -->
+        <button id="langToggleBtn" onclick="toggleLanguage()" class="pointer-events-auto bg-white/95 backdrop-blur-md text-gray-800 border border-gold/40 px-4 py-2 rounded-full shadow-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105 hover:border-gold flex items-center gap-2">
+            <i class="fas fa-globe text-gold"></i> <span id="langText">සිංහල</span>
+        </button>
+
+        <!-- Audio Control Widget -->
+        <button id="musicToggleBtn" onclick="toggleAudio()" class="pointer-events-auto bg-white/95 backdrop-blur-md text-gold-dark border border-gold/40 px-4 py-2 rounded-full shadow-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105 hover:border-gold flex items-center gap-2">
+            <i id="musicIcon" class="fas fa-music text-gold"></i>
+            <span id="musicText">Play Music</span>
+        </button>
+    </div>
+
+    <!-- Central Wrapper Container -->
+    <div class="max-w-4xl mx-auto bg-white shadow-2xl md:my-6 md:rounded-3xl overflow-hidden border border-gold-light">
+
+        <!-- 1. HERO VIDEO & COVER SECTION -->
+       <section class="relative w-full h-[550px] md:h-[600px] overflow-hidden flex items-center justify-center bg-black">
+            <!-- Background Video Loop -->
+            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover">
+    <source src="couple_video.mp4" type="video/mp4">
+</video>
+                <source src="couple_video.mp4" type="video/mp4">
+            </video>
+
+            <!-- Gradient Layer & Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20"></div>
+
+            <!-- Heart Particles Container -->
+            <div id="particleContainer" class="absolute inset-0 pointer-events-none"></div>
+
+            <!-- Hero Text Content -->
+            <div class="relative z-10 text-center text-white px-6 pb-12 sm:pb-16 max-w-2xl space-y-4">
+                <p id="heroSaveDate" class="font-cursive text-3xl sm:text-4xl text-gold-light drop-shadow-md">Save Our Date</p>
+                <h1 class="font-serif text-4xl sm:text-6xl font-bold tracking-wide">
+                    Kasun <span class="font-cursive text-5xl sm:text-7xl text-gold font-normal px-2">&</span> Nuwani
+                </h1>
+                <p id="heroDateText" class="font-serif text-base sm:text-xl font-light tracking-[0.25em] uppercase text-gray-200">
+                    Friday, November 20, 2026
+                </p>
+                <div class="pt-4 flex flex-wrap justify-center gap-3">
+                    <a href="#rsvpSection" class="gold-button text-white font-semibold text-xs sm:text-sm px-6 py-3 rounded-full shadow-lg flex items-center gap-2">
+                        <i class="far fa-envelope-open"></i> <span id="heroRsvpBtn">RSVP Now</span>
+                    </a>
+                    <a href="#venueSection" class="bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border border-white/40 font-semibold text-xs sm:text-sm px-6 py-3 rounded-full transition-all flex items-center gap-2">
+                        <i class="fas fa-map-marker-alt text-gold-light"></i> <span id="heroVenueBtn">Location</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. INVITATION MESSAGE & COUNTDOWN SECTION -->
+        <section class="py-12 sm:py-16 px-6 text-center bg-gradient-to-b from-ivory via-white to-ivory space-y-8">
+            <div class="flex justify-center items-center gap-3">
+                <div class="h-[1px] w-12 bg-gold"></div>
+                <i class="fas fa-heart text-gold-rose text-lg animate-pulse"></i>
+                <div class="h-[1px] w-12 bg-gold"></div>
+            </div>
+
+            <div class="max-w-2xl mx-auto space-y-3">
+                <p id="inviteTagline" class="text-xs font-bold uppercase tracking-[0.3em] text-gold-dark">Together With Their Families</p>
+                <h2 id="inviteTitle" class="font-serif text-3xl sm:text-4xl text-gray-900 font-semibold">We Are Getting Married!</h2>
+                <p id="inviteBody" class="text-gray-600 text-sm sm:text-base leading-relaxed pt-2 font-light">
+                    As we begin this beautiful new journey together, we request the honor of your presence and blessings on our special day.
+                </p>
+            </div>
+
+            <!-- Countdown Clock Container -->
+            <div class="glass-panel max-w-lg mx-auto rounded-2xl p-6 sm:p-8 shadow-md">
+                <h3 id="countdownHeader" class="text-xs font-bold uppercase tracking-widest text-gold-dark mb-6">Countdown To Our Big Day</h3>
+                <div class="grid grid-cols-4 gap-3 sm:gap-4">
+                    <div class="bg-gray-900 text-white p-3 rounded-xl shadow-md border border-gold/30">
+                        <span id="cdDays" class="font-serif text-2xl sm:text-3xl font-bold text-gold-light block">00</span>
+                        <span id="cdLabelDays" class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">Days</span>
+                    </div>
+                    <div class="bg-gray-900 text-white p-3 rounded-xl shadow-md border border-gold/30">
+                        <span id="cdHours" class="font-serif text-2xl sm:text-3xl font-bold text-gold-light block">00</span>
+                        <span id="cdLabelHours" class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">Hours</span>
+                    </div>
+                    <div class="bg-gray-900 text-white p-3 rounded-xl shadow-md border border-gold/30">
+                        <span id="cdMins" class="font-serif text-2xl sm:text-3xl font-bold text-gold-light block">00</span>
+                        <span id="cdLabelMins" class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">Mins</span>
+                    </div>
+                    <div class="bg-gray-900 text-white p-3 rounded-xl shadow-md border border-gold/30">
+                        <span id="cdSecs" class="font-serif text-2xl sm:text-3xl font-bold text-gold-light block">00</span>
+                        <span id="cdLabelSecs" class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">Secs</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Add to Calendar -->
+            <div class="pt-2 flex flex-wrap justify-center gap-3">
+                <a id="addToCalendarBtn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding+of+Kasun+%26+Nuwani&dates=20261120T040000Z/20261120T100000Z&details=We+are+delighted+to+invite+you+to+our+wedding+ceremony.&location=Shangri-La+Hotel,+Colombo" target="_blank" rel="noopener" class="bg-white border border-gray-300 hover:border-gold text-gray-700 text-xs font-semibold py-2.5 px-5 rounded-full shadow-sm hover:shadow transition flex items-center gap-2">
+                    <i class="far fa-calendar-plus text-gold-dark"></i> <span id="calBtnText">Add to Google Calendar</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- 3. GROOM & BRIDE PROFILES & LOVE STORY TIMELINE -->
+        <section class="py-12 sm:py-16 px-6 bg-blush/40 border-y border-gold-light/40 space-y-12">
+            <!-- Section Header -->
+            <div class="text-center space-y-2">
+                <h3 id="coupleSectionTitle" class="text-xs font-bold uppercase tracking-[0.25em] text-gold-dark">The Happy Couple</h3>
+                <h2 id="coupleSectionSubtitle" class="font-serif text-3xl sm:text-4xl font-semibold text-gray-900">Groom & Bride</h2>
+            </div>
+
+            <!-- Couple Profiles Grid -->
+            <div class="grid md:grid-cols-2 gap-8 items-center max-w-3xl mx-auto">
+                <!-- Groom Profile Card -->
+                <div class="bg-white rounded-2xl p-6 text-center shadow-md border border-gold-light/60 space-y-4 hover:shadow-lg transition">
+                    <div class="relative w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-gold p-1 shadow-md">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400" alt="Groom Kasun" class="w-full h-full object-cover rounded-full">
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-2xl font-bold text-gray-900">Kasun Perera</h3>
+                        <p id="groomTitle" class="text-xs text-gold-dark font-semibold tracking-wider uppercase mt-0.5">The Groom</p>
+                    </div>
+                    <p id="groomBio" class="text-gray-600 text-xs sm:text-sm leading-relaxed italic">
+                        "An Software Engineer with a passion for music and photography, ready to build a lifetime of memories with Nuwani."
+                    </p>
+                    <div class="flex justify-center gap-3 text-gray-400">
+                        <a href="#" class="hover:text-gold transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="hover:text-gold transition"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="hover:text-gold transition"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+
+                <!-- Bride Profile Card -->
+                <div class="bg-white rounded-2xl p-6 text-center shadow-md border border-gold-light/60 space-y-4 hover:shadow-lg transition">
+                    <div class="relative w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-gold-rose p-1 shadow-md">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400" alt="Bride Nuwani" class="w-full h-full object-cover rounded-full">
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-2xl font-bold text-gray-900">Nuwani Fernando</h3>
+                        <p id="brideTitle" class="text-xs text-gold-rose font-semibold tracking-wider uppercase mt-0.5">The Bride</p>
+                    </div>
+                    <p id="brideBio" class="text-gray-600 text-xs sm:text-sm leading-relaxed italic">
+                        "An Interior Architect who loves art and nature, finding her soulmate and best friend in Kasun."
+                    </p>
+                    <div class="flex justify-center gap-3 text-gray-400">
+                        <a href="#" class="hover:text-gold-rose transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="hover:text-gold-rose transition"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="hover:text-gold-rose transition"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Love Story Timeline Section -->
+            <div class="max-w-2xl mx-auto pt-8 space-y-8">
+                <div class="text-center space-y-1">
+                    <h4 id="storyTitle" class="font-serif text-2xl font-bold text-gray-900">Our Love Story</h4>
+                    <p id="storySubtitle" class="text-xs text-gray-500 uppercase tracking-widest">How It All Began</p>
+                </div>
+
+                <div class="relative border-l-2 border-gold-light ml-4 sm:ml-32 space-y-8">
+                    <!-- Timeline Item 1 -->
+                    <div class="relative pl-6 sm:pl-8">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gold border-2 border-white"></div>
+                        <span class="inline-block px-3 py-1 bg-gold-light text-gold-dark text-[11px] font-bold rounded-full mb-1">2021 October</span>
+                        <h5 id="tlFirstMetTitle" class="font-serif font-bold text-gray-900 text-lg">First Time We Met</h5>
+                        <p id="tlFirstMetDesc" class="text-xs sm:text-sm text-gray-600 mt-1">Met during a university alumni tech convention in Colombo and clicked over shared coffee interests.</p>
+                    </div>
+
+                    <!-- Timeline Item 2 -->
+                    <div class="relative pl-6 sm:pl-8">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gold border-2 border-white"></div>
+                        <span class="inline-block px-3 py-1 bg-gold-light text-gold-dark text-[11px] font-bold rounded-full mb-1">2022 Valentine's</span>
+                        <h5 id="tlFirstDateTitle" class="font-serif font-bold text-gray-900 text-lg">First Official Date</h5>
+                        <p id="tlFirstDateDesc" class="text-xs sm:text-sm text-gray-600 mt-1">A quiet evening dinner overlooking the sunset at Mount Lavinia beach.</p>
+                    </div>
+
+                    <!-- Timeline Item 3 -->
+                    <div class="relative pl-6 sm:pl-8">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gold border-2 border-white"></div>
+                        <span class="inline-block px-3 py-1 bg-gold-light text-gold-dark text-[11px] font-bold rounded-full mb-1">2024 December</span>
+                        <h5 id="tlProposalTitle" class="font-serif font-bold text-gray-900 text-lg">The Dream Proposal</h5>
+                        <p id="tlProposalDesc" class="text-xs sm:text-sm text-gray-600 mt-1">Kasun proposed under the starlit sky during a romantic holiday getaway in Ella.</p>
+                    </div>
+
+                    <!-- Timeline Item 4 -->
+                    <div class="relative pl-6 sm:pl-8">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gold-rose border-2 border-white animate-pulse"></div>
+                        <span class="inline-block px-3 py-1 bg-gold-roselight text-gold-rose text-[11px] font-bold rounded-full mb-1">2026 November</span>
+                        <h5 id="tlWeddingTitle" class="font-serif font-bold text-gray-900 text-lg">Our Wedding Day</h5>
+                        <p id="tlWeddingDesc" class="text-xs sm:text-sm text-gray-600 mt-1">Stepping into eternity together in front of all our loved ones.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. SCHEDULE / PROGRAM ITINERARY SECTION -->
+        <section class="py-12 sm:py-16 px-6 bg-white space-y-10">
+            <div class="text-center space-y-2">
+                <p id="schedTagline" class="text-xs font-bold uppercase tracking-[0.25em] text-gold-dark">Order of Events</p>
+                <h2 id="schedTitle" class="font-serif text-3xl sm:text-4xl font-semibold text-gray-900">Program Schedule</h2>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <!-- Event Card 1 -->
+                <div class="bg-ivory border border-gold-light/60 p-5 rounded-2xl shadow-sm text-center space-y-3 hover:border-gold transition">
+                    <div class="w-12 h-12 mx-auto rounded-full bg-gold-light/50 flex items-center justify-center text-gold-dark text-xl">
+                        <i class="fas fa-users text-gold-dark"></i>
+                    </div>
+                    <span class="inline-block px-3 py-1 bg-white border border-gold-light text-gold-dark font-semibold text-xs rounded-full">08:30 AM - 09:15 AM</span>
+                    <h4 id="ev1Title" class="font-serif font-bold text-gray-900">Guest Arrival</h4>
+                    <p id="ev1Desc" class="text-xs text-gray-600">Welcoming family and distinguished guests with refreshing welcome drinks.</p>
+                </div>
+
+                <!-- Event Card 2 -->
+                <div class="bg-ivory border border-gold-light/60 p-5 rounded-2xl shadow-sm text-center space-y-3 hover:border-gold transition">
+                    <div class="w-12 h-12 mx-auto rounded-full bg-gold-light/50 flex items-center justify-center text-gold-dark text-xl">
+                        <i class="fas fa-gem text-gold-dark"></i>
+                    </div>
+                    <span class="inline-block px-3 py-1 bg-white border border-gold-light text-gold-dark font-semibold text-xs rounded-full">09:30 AM</span>
+                    <h4 id="ev2Title" class="font-serif font-bold text-gray-900">Poruwa Ceremony</h4>
+                    <p id="ev2Desc" class="text-xs text-gray-600">Traditional Poruwa customs, ring exchange, and signing of marriage register.</p>
+                </div>
+
+                <!-- Event Card 3 -->
+                <div class="bg-ivory border border-gold-light/60 p-5 rounded-2xl shadow-sm text-center space-y-3 hover:border-gold transition">
+                    <div class="w-12 h-12 mx-auto rounded-full bg-gold-light/50 flex items-center justify-center text-gold-dark text-xl">
+                        <i class="fas fa-glass-cheers text-gold-dark"></i>
+                    </div>
+                    <span class="inline-block px-3 py-1 bg-white border border-gold-light text-gold-dark font-semibold text-xs rounded-full">11:30 AM</span>
+                    <h4 id="ev3Title" class="font-serif font-bold text-gray-900">Champagne & Cake Toast</h4>
+                    <p id="ev3Desc" class="text-xs text-gray-600">Raising a toast to the newlyweds followed by cake cutting celebration.</p>
+                </div>
+
+                <!-- Event Card 4 -->
+                <div class="bg-ivory border border-gold-light/60 p-5 rounded-2xl shadow-sm text-center space-y-3 hover:border-gold transition">
+                    <div class="w-12 h-12 mx-auto rounded-full bg-gold-light/50 flex items-center justify-center text-gold-dark text-xl">
+                        <i class="fas fa-utensils text-gold-dark"></i>
+                    </div>
+                    <span class="inline-block px-3 py-1 bg-white border border-gold-light text-gold-dark font-semibold text-xs rounded-full">12:30 PM</span>
+                    <h4 id="ev4Title" class="font-serif font-bold text-gray-900">Festive Lunch Buffet</h4>
+                    <p id="ev4Desc" class="text-xs text-gray-600">Sumptuous international lunch feast with live music performance.</p>
+                </div>
+
+                <!-- Event Card 5 -->
+                <div class="bg-ivory border border-gold-light/60 p-5 rounded-2xl shadow-sm text-center space-y-3 hover:border-gold transition sm:col-span-2 lg:col-span-2">
+                    <div class="w-12 h-12 mx-auto rounded-full bg-gold-light/50 flex items-center justify-center text-gold-dark text-xl">
+                        <i class="fas fa-music text-gold-dark"></i>
+                    </div>
+                    <span class="inline-block px-3 py-1 bg-white border border-gold-light text-gold-dark font-semibold text-xs rounded-full">02:30 PM Onwards</span>
+                    <h4 id="ev5Title" class="font-serif font-bold text-gray-900">First Dance & Evening Party</h4>
+                    <p id="ev5Desc" class="text-xs text-gray-600">Bridal first dance followed by photo session and social dancing celebration.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. VENUE & LOCATION SECTION -->
+        <section id="venueSection" class="py-12 sm:py-16 px-6 bg-gradient-to-b from-ivory to-white border-t border-gold-light/40 space-y-8">
+            <div class="text-center space-y-2">
+                <p id="venueTagline" class="text-xs font-bold uppercase tracking-[0.25em] text-gold-dark">Where We Say I Do</p>
+                <h2 id="venueMainTitle" class="font-serif text-3xl sm:text-4xl font-semibold text-gray-900">Venue & Location</h2>
+            </div>
+
+            <div class="max-w-3xl mx-auto grid md:grid-cols-2 gap-8 items-center bg-white p-6 sm:p-8 rounded-3xl border border-gold-light shadow-md">
+                <!-- Location Details -->
+                <div class="space-y-4">
+                    <div>
+                        <span class="px-3 py-1 bg-gold-light text-gold-dark text-xs font-bold rounded-full uppercase">Main Ballroom</span>
+                        <h3 class="font-serif text-2xl font-bold text-gray-900 mt-2">Shangri-La Hotel, Colombo</h3>
+                        <p id="venueAddr" class="text-xs text-gray-500 mt-1">1 Galle Face, Colombo 02, Sri Lanka</p>
+                    </div>
+
+                    <div class="space-y-2 pt-2 text-xs sm:text-sm text-gray-600">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-tshirt text-gold-dark w-5 text-center"></i>
+                            <span id="dressCodeText"><strong>Dress Code:</strong> Formal / Traditional Elegant</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-parking text-gold-dark w-5 text-center"></i>
+                            <span id="parkingText"><strong>Parking:</strong> Valet & Self-parking available</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 space-y-2">
+                        <a href="https://maps.google.com/?q=Shangri-La+Hotel+Colombo" target="_blank" rel="noopener" class="gold-button text-white w-full py-3 rounded-xl font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md">
+                            <i class="fas fa-directions"></i> <span id="getDirBtnText">Get Directions on Google Maps</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Google Maps Preview Embed Frame -->
+                <div class="w-full h-64 sm:h-72 rounded-2xl overflow-hidden border border-gray-200 shadow-inner relative">
+                    <iframe title="Shangri-La Colombo Map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.718320494451!2d79.8427189758778!3d6.924285893075421!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2593855555555%3A0xb366b3ee3871dd62!2sShangri-La%20Colombo!5e0!3m2!1sen!2slk!4v1700000000000!5m2!1sen!2slk" class="w-full h-full border-0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. PHOTO GALLERY SECTION -->
+        <section class="py-12 sm:py-16 px-6 bg-white space-y-8">
+            <div class="text-center space-y-2">
+                <p id="galleryTagline" class="text-xs font-bold uppercase tracking-[0.25em] text-gold-dark">Pre-Wedding Moments</p>
+                <h2 id="galleryTitle" class="font-serif text-3xl sm:text-4xl font-semibold text-gray-900">Photo Gallery</h2>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 max-w-3xl mx-auto">
+                <div class="overflow-hidden rounded-2xl cursor-pointer group relative h-40 sm:h-48 border border-gold-light/40" onclick="openLightbox('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800')">
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=400" alt="Gallery 1" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white"><i class="fas fa-search-plus text-xl"></i></div>
+                </div>
+
+                <div class="overflow-hidden rounded-2xl cursor-pointer group relative h-40 sm:h-48 border border-gold-light/40" onclick="openLightbox('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800')">
+                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=400" alt="Gallery 2" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white"><i class="fas fa-search-plus text-xl"></i></div>
+                </div>
+
+                <div class="overflow-hidden rounded-2xl cursor-pointer group relative h-40 sm:h-48 border border-gold-light/40" onclick="openLightbox('https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800')">
+                    <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=400" alt="Gallery 3" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white"><i class="fas fa-search-plus text-xl"></i></div>
+                </div>
+
+                <div class="overflow-hidden rounded-2xl cursor-pointer group relative h-40 sm:h-48 border border-gold-light/40" onclick="openLightbox('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=800')">
+                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=400" alt="Gallery 4" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white"><i class="fas fa-search-plus text-xl"></i></div>
+                </div>
+
+                <div class="overflow-hidden rounded-2xl cursor-pointer group relative h-40 sm:h-48 border border-gold-light/40" onclick="openLightbox('https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&q=80&w=800')">
+                    <img src="https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&q=80&w=400" alt="Gallery 5" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white"><i class="fas fa-search-plus text-xl"></i></div>
+                </div>
+
+                <div class="overflow-hidden rounded-2xl cursor-pointer group relative h-40 sm:h-48 border border-gold-light/40" onclick="openLightbox('https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&q=80&w=800')">
+                    <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&q=80&w=400" alt="Gallery 6" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white"><i class="fas fa-search-plus text-xl"></i></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lightbox Modal -->
+        <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/90 hidden items-center justify-center p-4" onclick="closeLightbox()">
+            <button class="absolute top-6 right-6 text-white text-3xl font-bold hover:text-gold transition">&times;</button>
+            <img id="lightboxImg" src="" alt="Enlarged gallery view" class="max-w-full max-h-[85vh] rounded-xl shadow-2xl">
+        </div>
+
+        <!-- 7. MULTI-FUNCTIONAL RSVP FORM SECTION -->
+        <section id="rsvpSection" class="py-12 sm:py-16 px-6 bg-blush/30 border-t border-gold-light/40 space-y-8">
+            <div class="text-center space-y-2">
+                <p id="rsvpTagline" class="text-xs font-bold uppercase tracking-[0.25em] text-gold-dark">Please Respond</p>
+                <h2 id="rsvpTitle" class="font-serif text-3xl sm:text-4xl font-semibold text-gray-900">R.S.V.P</h2>
+                <p id="rsvpSub" class="text-xs text-gray-500">Kindly respond by 1st November 2026</p>
+            </div>
+
+            <!-- RSVP Form Box -->
+            <div class="max-w-xl mx-auto bg-white p-6 sm:p-8 rounded-3xl border border-gold-light shadow-lg">
+                <form id="rsvpForm" onsubmit="handleRSVPSubmit(event)" class="space-y-4">
+                    <!-- Guest Name -->
+                    <div>
+                        <label id="lblGuestName" class="block text-xs font-bold uppercase text-gray-700 mb-1">Your Full Name *</label>
+                        <input type="text" id="guestName" required placeholder="e.g. Ruwan Silva" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-gold focus:ring-1 focus:ring-gold outline-none text-sm transition">
+                    </div>
+
+                    <!-- Attendance Choice -->
+                    <div>
+                        <label id="lblAttendance" class="block text-xs font-bold uppercase text-gray-700 mb-1">Will You Attend? *</label>
+                        <select id="attendanceStatus" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-gold focus:ring-1 focus:ring-gold outline-none text-sm transition">
+                            <option value="Joyfully Accepts">Joyfully Accepts (පැමිණෙමි)</option>
+                            <option value="Regretfully Declines">Regretfully Declines (පැමිණීමට නොහැක)</option>
+                        </select>
+                    </div>
+
+                    <!-- Number of Guests -->
+                    <div>
+                        <label id="lblGuestCount" class="block text-xs font-bold uppercase text-gray-700 mb-1">Number of Guests Attending</label>
+                        <select id="guestCount" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-gold focus:ring-1 focus:ring-gold outline-none text-sm transition">
+                            <option value="1 Person (Just Me)">1 Person (Just Me)</option>
+                            <option value="2 Persons (+1 Partner)">2 Persons (+1 Partner)</option>
+                            <option value="3+ Family Members">3+ Family Members</option>
+                        </select>
+                    </div>
+
+                    <!-- Dietary Preference -->
+                    <div>
+                        <label id="lblDietary" class="block text-xs font-bold uppercase text-gray-700 mb-1">Dietary Preference</label>
+                        <select id="dietaryPref" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-gold focus:ring-1 focus:ring-gold outline-none text-sm transition">
+                            <option value="Standard Non-Veg">Standard Non-Veg (සාමාන්‍ය)</option>
+                            <option value="Strict Vegetarian">Strict Vegetarian (නිර්මාංශ)</option>
+                            <option value="Halal">Halal (හලාල්)</option>
+                        </select>
+                    </div>
+
+                    <!-- Note or Message -->
+                    <div>
+                        <label id="lblWishes" class="block text-xs font-bold uppercase text-gray-700 mb-1">Special Note or Warm Wish</label>
+                        <textarea id="guestMessage" rows="3" placeholder="Write your wishes here..." class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-gold focus:ring-1 focus:ring-gold outline-none text-sm transition"></textarea>
+                    </div>
+
+                    <!-- Action Button -->
+                    <button type="submit" class="gold-button text-white w-full py-3.5 rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-2">
+                        <i class="fab fa-whatsapp text-lg"></i> <span id="btnSendRSVP">Confirm & Send via WhatsApp</span>
+                    </button>
+                </form>
+
+                <!-- Confirmation Alert Badge -->
+                <div id="rsvpSuccessBadge" class="hidden mt-4 p-4 bg-emerald-50 border border-emerald-300 text-emerald-800 rounded-2xl text-center text-xs space-y-1">
+                    <p class="font-bold text-sm"><i class="fas fa-check-circle text-emerald-600"></i> Thank You! Your RSVP is Recorded.</p>
+                    <p>A message preview has been copied/opened in WhatsApp.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. DIGITAL GUESTBOOK / WISHES MEMORY WALL -->
+        <section class="py-12 sm:py-16 px-6 bg-white border-t border-gold-light/40 space-y-8">
+            <div class="text-center space-y-2">
+                <p id="guestbookTagline" class="text-xs font-bold uppercase tracking-[0.25em] text-gold-dark">Blessings & Greetings</p>
+                <h2 id="guestbookTitle" class="font-serif text-3xl sm:text-4xl font-semibold text-gray-900">Digital Memory Wall</h2>
+                <p id="guestbookSub" class="text-xs text-gray-500">Leave your warm wishes for the Bride & Groom</p>
+            </div>
+
+            <!-- Post Wish Input Box -->
+            <div class="max-w-xl mx-auto space-y-3 bg-ivory p-5 rounded-2xl border border-gold-light">
+                <input type="text" id="wishAuthor" placeholder="Your Name" class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-gold">
+                <textarea id="wishText" rows="2" placeholder="Write a short wish or message..." class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs focus:outline-none focus:border-gold"></textarea>
+                <button onclick="postWish()" class="bg-gray-900 hover:bg-gold-dark text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow">
+                    <i class="fas fa-paper-plane mr-1"></i> <span id="btnPostWish">Post Wish on Board</span>
+                </button>
+            </div>
+
+            <!-- Rendered Wish Cards Board -->
+            <div id="wishesGrid" class="grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto pt-4">
+                <!-- Initial Mock Wish 1 -->
+                <div class="bg-blush/40 border border-gold-light/60 p-4 rounded-2xl text-left space-y-1 shadow-sm">
+                    <p class="text-xs text-gray-700 italic">"Wishing you both a lifetime of eternal love, happiness, and prosperity! Can't wait to celebrate with you."</p>
+                    <p class="text-[11px] font-bold text-gold-dark text-right">— Kusal & Family</p>
+                </div>
+
+                <!-- Initial Mock Wish 2 -->
+                <div class="bg-blush/40 border border-gold-light/60 p-4 rounded-2xl text-left space-y-1 shadow-sm">
+                    <p class="text-xs text-gray-700 italic">"Congratulations Kasun & Nuwani! May your journey together be as beautiful as this special day."</p>
+                    <p class="text-[11px] font-bold text-gold-dark text-right">— Anusha Perera</p>
+                </div>
+            </div>
+        </section>
+
+        
+
+        <!-- 10. FOOTER SECTION -->
+        <footer class="py-8 px-6 bg-gray-900 text-white text-center space-y-3">
+            <p class="font-cursive text-3xl text-gold-light">Kasun & Nuwani</p>
+            <p id="footerText" class="text-xs text-gray-400">Thank you for being a part of our story. See you on our special day!</p>
+            <div class="pt-2 text-[10px] text-gray-600 uppercase tracking-widest">Digital Invitation • November 2026</div>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Comprehensive Multi-Language Dictionary (English & Sinhala)
+        const i18n = {
+            en: {
+                langBtn: "සිංහල",
+                playMusic: "Play Music",
+                pauseMusic: "Pause Music",
+                heroSaveDate: "Save Our Date",
+                heroDateText: "Friday, November 20, 2026",
+                heroRsvpBtn: "RSVP Now",
+                heroVenueBtn: "Location",
+                inviteTagline: "Together With Their Families",
+                inviteTitle: "We Are Getting Married!",
+                inviteBody: "As we begin this beautiful new journey together, we request the honor of your presence and blessings on our special day.",
+                cdTitle: "Countdown To Our Big Day",
+                cdDays: "Days", cdHours: "Hours", cdMins: "Mins", cdSecs: "Secs",
+                calBtnText: "Add to Google Calendar",
+                coupleSecTitle: "The Happy Couple",
+                coupleSecSub: "Groom & Bride",
+                groomTitle: "The Groom",
+                brideTitle: "The Bride",
+                groomBio: '"An Software Engineer with a passion for music and photography, ready to build a lifetime of memories with Nuwani."',
+                brideBio: '"An Interior Architect who loves art and nature, finding her soulmate and best friend in Kasun."',
+                storyTitle: "Our Love Story",
+                storySubtitle: "How It All Began",
+                tl1Title: "First Time We Met", tl1Desc: "Met during a university alumni tech convention in Colombo.",
+                tl2Title: "First Official Date", tl2Desc: "A quiet evening dinner overlooking the sunset at Mount Lavinia beach.",
+                tl3Title: "The Dream Proposal", tl3Desc: "Kasun proposed under the starlit sky during a romantic holiday getaway in Ella.",
+                tl4Title: "Our Wedding Day", tl4Desc: "Stepping into eternity together in front of all our loved ones.",
+                schedTagline: "Order of Events", schedTitle: "Program Schedule",
+                ev1Title: "Guest Arrival", ev1Desc: "Welcoming family and guests with refreshing welcome drinks.",
+                ev2Title: "Poruwa Ceremony", ev2Desc: "Traditional Poruwa customs, ring exchange, and signing of marriage register.",
+                ev3Title: "Champagne & Cake Toast", ev3Desc: "Raising a toast to the newlyweds followed by cake cutting celebration.",
+                ev4Title: "Festive Lunch Buffet", ev4Desc: "Sumptuous international lunch feast with live music performance.",
+                ev5Title: "First Dance & Celebration", ev5Desc: "Bridal first dance followed by photo session and social dancing celebration.",
+                venueTagline: "Where We Say I Do", venueTitle: "Venue & Location",
+                dressCode: "Dress Code: Formal / Traditional Elegant",
+                parking: "Parking: Valet & Self-parking available",
+                getDirBtn: "Get Directions on Google Maps",
+                galleryTagline: "Pre-Wedding Moments", galleryTitle: "Photo Gallery",
+                rsvpTagline: "Please Respond", rsvpTitle: "R.S.V.P", rsvpSub: "Kindly respond by 1st November 2026",
+                lblGuestName: "Your Full Name *", lblAttendance: "Will You Attend? *", lblGuestCount: "Number of Guests Attending",
+                lblDietary: "Dietary Preference", lblWishes: "Special Note or Warm Wish", btnSendRSVP: "Confirm & Send via WhatsApp",
+                guestbookTagline: "Blessings & Greetings", guestbookTitle: "Digital Memory Wall", guestbookSub: "Leave your warm wishes for the Bride & Groom",
+                btnPostWish: "Post Wish on Board",
+                giftTitle: "Registry & Gift Contributions", giftNote: "Your presence at our wedding is the greatest gift of all. However, if you wish to honor us with a gift, a monetary blessing towards our new home would be deeply appreciated.",
+                btnCopyBank: "Copy Bank Details",
+                footerText: "Thank you for being a part of our story. See you on our special day!"
+            },
+            si: {
+                langBtn: "English",
+                playMusic: "සංගීතය වාදනය කරන්න",
+                pauseMusic: "සංගීතය නවත්වන්න",
+                heroSaveDate: "අපගේ මංගල දිනය",
+                heroDateText: "2026 නොවැම්බර් මස 20 වන සිකුරාදා",
+                heroRsvpBtn: "පැමිණීම දැනුම් දෙන්න",
+                heroVenueBtn: "ස්ථානය",
+                inviteTagline: "දෙගුරුන්ගේ ආශීර්වාදය ඇතිව",
+                inviteTitle: "අපගේ අභිනව මංගල්‍යය",
+                inviteBody: "අපගේ ජීවිතයේ අමතක නොවන සුන්දර නව ඇරඹුම සමරන්නට, ආදරයෙන් සහ ගෞරවයෙන් ඔබට ඇරයුම් කරමු!",
+                cdTitle: "මංගල දිනයට තව",
+                cdDays: "දින", cdHours: "පැය", cdMins: "මිනිත්තු", cdSecs: "තත්පර",
+                calBtnText: "Google Calendar වෙත එකතු කරන්න",
+                coupleSecTitle: "මනාල යුවළ",
+                coupleSecSub: "කසුන් සහ නුවණි",
+                groomTitle: "මනාලයා",
+                brideTitle: "මනාලිය",
+                groomBio: '"මෘදුකාංග ඉංජිනේරුවෙකු වන කසුන්, සංගීතයට සහ ඡායාරූපකරණයට ඇලුම් කරන ආදරණීය සහකරුවෙකි."',
+                brideBio: '"අභ්‍යන්තර නිර්මාණ ශිල්පිනියක වන නුවණි, කලාත්මක සුන්දරත්වයට ලැදි ආදරණීය සහකාරියයි."',
+                storyTitle: "අපගේ ආදර කතාව",
+                storySubtitle: "ආරම්භයේ සිට අද දක්වා",
+                tl1Title: "පළමු හමුවීම", tl1Desc: "කොළඹ පැවැති විශ්වවිද්‍යාලයීය තාක්ෂණික සමුළුවකදී මුලින්ම හමුවිය.",
+                tl2Title: "පළමු දිනය", tl2Desc: "ගල්කිස්ස වෙරළ තීරයේ සුන්දර සැඳෑ යාමයක එකිනෙකා හඳුනාගැනීම.",
+                tl3Title: "ආදරණීය යෝජනාව", tl3Desc: "ඇල්ල සුන්දර කඳුකර පරිසරයකදී කසුන් විසින් නුවණිට විවාහ යෝජනාව ගෙන ආවේය.",
+                tl4Title: "මංගල දිනය", tl4Desc: "ආදරණීයයන් සියලු දෙනා ඉදිරියේ එකම සෙවනකට වී ජීවිතය ඇරඹීම.",
+                schedTagline: "මංගල වැඩසටහන", schedTitle: "දින චරියාව",
+                ev1Title: "අමුත්තන්ගේ පැමිණීම", ev1Desc: "ආදරණීය ඥාතීන් සහ හිතමිතුරන් පිළිගැනීම.",
+                ev2Title: "පෝරුවේ චාරිත්‍ර", ev2Desc: "සම්ප්‍රදායානුකූල පෝරුවේ චාරිත්‍ර, මුදු මාරු කිරීම සහ ලියාපදිංචිය.",
+                ev3Title: "කේක් කැපීමේ උත්සවය", ev3Desc: "සුබ පැතුම් සමඟ මංගල කේක් කැපීම සහ සතුට සැමරීම.",
+                ev4Title: "මංගල භෝජන සංග්‍රහය", ev4Desc: "මධුර සංගීතය සමඟ රසවත් ආහාර භෝජන සංග්‍රහය.",
+                ev5Title: "සංගීත සහ ඡායාරූප හෝරාව", ev5Desc: "මනාල යුවළගේ පළමු රංගනය සහ අමුත්තන්ගේ සතුටු සාමය.",
+                venueTagline: "මංගල සභාව", venueTitle: "ස්ථානය සහ විස්තර",
+                dressCode: "ඇඳුම් විලාසිතාව: සම්ප්‍රදායික / ඡායා අලංකාර ඇඳුම්",
+                parking: "රථ ගාල: පහසු වාහන නැවැත්වීමේ පහසුකම් සහිතයි",
+                getDirBtn: "Google Maps මගින් පාර සොයාගන්න",
+                galleryTagline: "ඡායාරූප එකතුව", galleryTitle: "අපගේ සුන්දර මතකයන්",
+                rsvpTagline: "පැමිණීම දැනුම් දෙන්න", rsvpTitle: "R.S.V.P", rsvpSub: "2026 නොවැම්බර් 01 දිනට පෙර දැනුම් දෙන්න",
+                lblGuestName: "ඔබගේ සම්පූර්ණ නම *", lblAttendance: "පැමිණෙනවාද? *", lblGuestCount: "පැමිණෙන සංඛ්‍යාව",
+                lblDietary: "ආහාර රුචිකත්වය", lblWishes: "සුබ පැතුම් සටහන", btnSendRSVP: "WhatsApp මගින් තහවුරු කරන්න",
+                guestbookTagline: "සුබ පැතුම් පුවරුව", guestbookTitle: "ඩිජිටල් මතක පුවරුව", guestbookSub: "මනාල යුවළට ඔබේ සුබ පැතුම් එක් කරන්න",
+                btnPostWish: "සුබ පැතුම පුවරුවට එක් කරන්න",
+                giftTitle: "තෑගි සහ ආශීර්වාද", giftNote: "ඔබගේ පැමිණීම අපට ලැබෙන අගනාම තෑග්ගයි. යම් හෙයකින් මුල්‍යමය තෑග්ගක් පිරිනැමීමට අදහස් කරන්නේ නම් පහත ගිණුම භාවිතා කළ හැක.",
+                btnCopyBank: "බැංකු විස්තර Copy කරගන්න",
+                footerText: "අපගේ සුන්දර මංගල දිනයට පැමිණෙන ලෙස ආදරයෙන් ඇරයුම් කරමු!"
+            }
+        };
+
+        let currentLang = 'en';
+
+        // Toggle Language Function
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'si' : 'en';
+            const data = i18n[currentLang];
+
+            document.getElementById('langText').innerText = data.langBtn;
+            document.getElementById('heroSaveDate').innerText = data.heroSaveDate;
+            document.getElementById('heroDateText').innerText = data.heroDateText;
+            document.getElementById('heroRsvpBtn').innerText = data.heroRsvpBtn;
+            document.getElementById('heroVenueBtn').innerText = data.heroVenueBtn;
+
+            document.getElementById('inviteTagline').innerText = data.inviteTagline;
+            document.getElementById('inviteTitle').innerText = data.inviteTitle;
+            document.getElementById('inviteBody').innerText = data.inviteBody;
+
+            document.getElementById('countdownHeader').innerText = data.cdTitle;
+            document.getElementById('cdLabelDays').innerText = data.cdDays;
+            document.getElementById('cdLabelHours').innerText = data.cdHours;
+            document.getElementById('cdLabelMins').innerText = data.cdMins;
+            document.getElementById('cdLabelSecs').innerText = data.cdSecs;
+            document.getElementById('calBtnText').innerText = data.calBtnText;
+
+            document.getElementById('coupleSectionTitle').innerText = data.coupleSecTitle;
+            document.getElementById('coupleSectionSubtitle').innerText = data.coupleSecSub;
+            document.getElementById('groomTitle').innerText = data.groomTitle;
+            document.getElementById('brideTitle').innerText = data.brideTitle;
+            document.getElementById('groomBio').innerText = data.groomBio;
+            document.getElementById('brideBio').innerText = data.brideBio;
+
+            document.getElementById('storyTitle').innerText = data.storyTitle;
+            document.getElementById('storySubtitle').innerText = data.storySubtitle;
+            document.getElementById('tlFirstMetTitle').innerText = data.tl1Title;
+            document.getElementById('tlFirstMetDesc').innerText = data.tl1Desc;
+            document.getElementById('tlFirstDateTitle').innerText = data.tl2Title;
+            document.getElementById('tlFirstDateDesc').innerText = data.tl2Desc;
+            document.getElementById('tlProposalTitle').innerText = data.tl3Title;
+            document.getElementById('tlProposalDesc').innerText = data.tl3Desc;
+            document.getElementById('tlWeddingTitle').innerText = data.tl4Title;
+            document.getElementById('tlWeddingDesc').innerText = data.tl4Desc;
+
+            document.getElementById('schedTagline').innerText = data.schedTagline;
+            document.getElementById('schedTitle').innerText = data.schedTitle;
+            document.getElementById('ev1Title').innerText = data.ev1Title;
+            document.getElementById('ev1Desc').innerText = data.ev1Desc;
+            document.getElementById('ev2Title').innerText = data.ev2Title;
+            document.getElementById('ev2Desc').innerText = data.ev2Desc;
+            document.getElementById('ev3Title').innerText = data.ev3Title;
+            document.getElementById('ev3Desc').innerText = data.ev3Desc;
+            document.getElementById('ev4Title').innerText = data.ev4Title;
+            document.getElementById('ev4Desc').innerText = data.ev4Desc;
+            document.getElementById('ev5Title').innerText = data.ev5Title;
+            document.getElementById('ev5Desc').innerText = data.ev5Desc;
+
+            document.getElementById('venueTagline').innerText = data.venueTagline;
+            document.getElementById('venueMainTitle').innerText = data.venueTitle;
+            document.getElementById('dressCodeText').innerHTML = `<strong>${data.dressCode.split(':')[0]}:</strong> ${data.dressCode.split(':')[1]}`;
+            document.getElementById('parkingText').innerHTML = `<strong>${data.parking.split(':')[0]}:</strong> ${data.parking.split(':')[1]}`;
+            document.getElementById('getDirBtnText').innerText = data.getDirBtn;
+
+            document.getElementById('galleryTagline').innerText = data.galleryTagline;
+            document.getElementById('galleryTitle').innerText = data.galleryTitle;
+
+            document.getElementById('rsvpTagline').innerText = data.rsvpTagline;
+            document.getElementById('rsvpTitle').innerText = data.rsvpTitle;
+            document.getElementById('rsvpSub').innerText = data.rsvpSub;
+            document.getElementById('lblGuestName').innerText = data.lblGuestName;
+            document.getElementById('lblAttendance').innerText = data.lblAttendance;
+            document.getElementById('lblGuestCount').innerText = data.lblGuestCount;
+            document.getElementById('lblDietary').innerText = data.lblDietary;
+            document.getElementById('lblWishes').innerText = data.lblWishes;
+            document.getElementById('btnSendRSVP').innerText = data.btnSendRSVP;
+
+            document.getElementById('guestbookTagline').innerText = data.guestbookTagline;
+            document.getElementById('guestbookTitle').innerText = data.guestbookTitle;
+            document.getElementById('guestbookSub').innerText = data.guestbookSub;
+            document.getElementById('btnPostWish').innerText = data.btnPostWish;
+
+            document.getElementById('giftTitle').innerText = data.giftTitle;
+            document.getElementById('giftNote').innerText = data.giftNote;
+            document.getElementById('btnCopyBank').innerText = data.btnCopyBank;
+            document.getElementById('footerText').innerText = data.footerText;
+
+            updateAudioBtnLabel();
+        }
+
+        const audio = document.getElementById('weddingMusic');
+        const musicIcon = document.getElementById('musicIcon');
+        const musicText = document.getElementById('musicText');
+        let isAudioPlaying = false;
+
+        function toggleAudio() {
+            if (isAudioPlaying) {
+                audio.pause();
+                musicIcon.classList.remove('fa-spin');
+                isAudioPlaying = false;
+            } else {
+                audio.play().then(() => {
+                    musicIcon.classList.add('fa-spin');
+                    isAudioPlaying = true;
+                }).catch(err => console.log("Audio play deferred to user gesture"));
+            }
+            updateAudioBtnLabel();
+        }
+
+        function updateAudioBtnLabel() {
+            const data = i18n[currentLang];
+            musicText.innerText = isAudioPlaying ? data.pauseMusic : data.playMusic;
+        }
+
+        const weddingTimestamp = new Date("2026-11-20T09:30:00").getTime();
+
+        function runCountdown() {
+            const now = new Date().getTime();
+            const gap = weddingTimestamp - now;
+
+            if (gap > 0) {
+                const days = Math.floor(gap / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const mins = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((gap % (1000 * 60)) / 1000);
+
+                document.getElementById('cdDays').innerText = days < 10 ? '0' + days : days;
+                document.getElementById('cdHours').innerText = hours < 10 ? '0' + hours : hours;
+                document.getElementById('cdMins').innerText = mins < 10 ? '0' + mins : mins;
+                document.getElementById('cdSecs').innerText = secs < 10 ? '0' + secs : secs;
+            } else {
+                document.getElementById('cdDays').innerText = "00";
+                document.getElementById('cdHours').innerText = "00";
+                document.getElementById('cdMins').innerText = "00";
+                document.getElementById('cdSecs').innerText = "00";
+            }
+        }
+        setInterval(runCountdown, 1000);
+        runCountdown();
+
+        function openLightbox(imgUrl) {
+            const modal = document.getElementById('lightboxModal');
+            const img = document.getElementById('lightboxImg');
+            img.src = imgUrl;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightboxModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function handleRSVPSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('guestName').value;
+            const attendance = document.getElementById('attendanceStatus').value;
+            const count = document.getElementById('guestCount').value;
+            const dietary = document.getElementById('dietaryPref').value;
+            const note = document.getElementById('guestMessage').value;
+
+            // Save to LocalStorage
+            const rsvpData = { name, attendance, count, dietary, note, date: new Date().toISOString() };
+            localStorage.setItem('wedding_rsvp_' + name, JSON.stringify(rsvpData));
+
+            // Format WhatsApp Message
+            const whatsappText = `Hello Kasun & Nuwani! 💒%0A%0A*RSVP Confirmation*%0A• *Name:* ${encodeURIComponent(name)}%0A• *Status:* ${encodeURIComponent(attendance)}%0A• *Guests:* ${encodeURIComponent(count)}%0A• *Dietary:* ${encodeURIComponent(dietary)}%0A• *Message:* ${encodeURIComponent(note)}`;
+            
+            // Open WhatsApp
+            window.open(`https://wa.me/94771234567?text=${whatsappText}`, '_blank');
+
+            // Show local confirmation badge
+            document.getElementById('rsvpSuccessBadge').classList.remove('hidden');
+        }
+
+        function postWish() {
+            const author = document.getElementById('wishAuthor').value.trim();
+            const text = document.getElementById('wishText').value.trim();
+
+            if (!author || !text) {
+                alert('Please enter both your name and wish.');
+                return;
+            }
+
+            const grid = document.getElementById('wishesGrid');
+            const card = document.createElement('div');
+            card.className = "bg-blush/40 border border-gold-light/60 p-4 rounded-2xl text-left space-y-1 shadow-sm transition hover:shadow";
+            card.innerHTML = `<p class="text-xs text-gray-700 italic">"${escapeHtml(text)}"</p><p class="text-[11px] font-bold text-gold-dark text-right">— ${escapeHtml(author)}</p>`;
+            grid.prepend(card);
+
+            // Reset inputs
+            document.getElementById('wishAuthor').value = '';
+            document.getElementById('wishText').value = '';
+        }
+
+        function escapeHtml(string) {
+            return String(string).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function copyBankDetails() {
+            const textToCopy = "Bank: Commercial Bank of Ceylon\nAccount Name: K A Kasun & N M Fernando\nAccount Number: 8009123456\nBranch: City Office Branch, Colombo";
+            
+            // Fallback copy execution
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = textToCopy;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+
+            const btnText = document.getElementById('btnCopyBank');
+            const originalText = btnText.innerText;
+            btnText.innerText = "Copied to Clipboard! ✓";
+            setTimeout(() => {
+                btnText.innerText = originalText;
+            }, 2500);
+        }
+
+        function initParticles() {
+            const container = document.getElementById('particleContainer');
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('i');
+                particle.className = 'fas fa-heart particle text-gold-light text-xs';
+                particle.style.left = Math.random() * 90 + 5 + '%';
+                particle.style.bottom = '20px';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        window.onload = function() {
+            initParticles();
+        };
+    </script>
+</body>
+</html>
